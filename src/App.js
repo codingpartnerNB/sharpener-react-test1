@@ -2,14 +2,7 @@ import React, { useState, useEffect } from "react";
 import FormInput from './components/FormInput/FormInput';
 import DisplayInput from './components/DisplayInput/DisplayInput';
 
-const products = [
-  {
-    id:"product1",
-    price:3000,
-    name:"Nokia",
-    category:"Inc"
-  }
-];
+const products = [];
 
 function App() {
   const [productList, setProductList] = useState(products);
@@ -28,10 +21,20 @@ function App() {
       return [...prev, newProduct];
     })
   }
+
+  const deleteProductHandler = (prodId)=>{
+    setProductList(
+      productList.filter((product)=>{
+        return product.id !== prodId;
+      })
+    );
+  }
+
+
   return (
     <React.Fragment>
       <FormInput onAddProduct = {addProductHandler} />
-      <DisplayInput products={productList} />
+      <DisplayInput products={productList} onDeleteProduct={deleteProductHandler} />
     </React.Fragment>
   );
 }
