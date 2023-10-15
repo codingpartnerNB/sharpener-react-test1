@@ -1,24 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import FormInput from './components/FormInput/FormInput';
+import DisplayInput from './components/DisplayInput/DisplayInput';
+
+const products = [
+  {
+    id:"product1",
+    price:3000,
+    name:"Nokia",
+    category:"Inc"
+  }
+];
 
 function App() {
+  const [productList, setProductList] = useState(products);
+
+  useEffect(()=>{
+    const keys = Object.keys(localStorage);
+    const arr = [];
+    keys.forEach((key)=>{
+      arr.push(JSON.parse(localStorage.getItem(key)));
+    }); 
+    setProductList(arr);
+  },[]);
+
+  const addProductHandler = (newProduct)=>{
+    setProductList((prev)=>{
+      return [...prev, newProduct];
+    })
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <React.Fragment>
+      <FormInput onAddProduct = {addProductHandler} />
+      <DisplayInput products={productList} />
+    </React.Fragment>
   );
 }
 
